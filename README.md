@@ -23,3 +23,9 @@ session sql
 email sql -- optional
 
 template folder (header/top/footer/functions) -- must explain all functions and arguments
+
+header for authentication files:
+login
+register
+logout
+including a global userinformation variable header
