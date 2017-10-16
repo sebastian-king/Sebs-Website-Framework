@@ -11,13 +11,13 @@ It is designed to be the most efficient form of managing a website and relies up
 
 The provided files are detailed below:
 
-###.htaccess
+### .htaccess
 - The .htaccess file includes a handy rewrite rule that removes the need for the .php in URL, therefore /login.php can be referenced by /login, for example.
 - Rule to force use of www.
 - Rule to force SSL (if enabled)
 - hides directory listings for security
 
-###template
+### template
 This is the brunt of the website, here are many important and fundamental website features.
 - MySQL database configuration
 - Style and HTML header and footer templates for all pages
@@ -25,24 +25,24 @@ This is the brunt of the website, here are many important and fundamental websit
 - Email function
 - Post slug function for turning user inputted strings into SEO friendly links
 
-###auth
+### auth
 The authentication modules included are:
 - Login
 - Logout
 - Register
 - Forgot password
 
-###certbot
+### certbot
 Included in the installer, is a recommended tool called `certbot` which will provide free and automated SSL for your website
 
-###apache
+### apache
 An example apache configuration file is provided, this file is easy for `cerbot` to use to make SSL and also contained `AllowOverride  All` that is needed for `.htaccess` to be executed.
 
-###sql
+### sql
 SQL templates included:
 - Users
 - Emails sent
 - Authentication sessions
 
-###vsftpd configuration
+### vsftpd configuration
 VSFTPD is a bare minimum, and _very secure_ FTP daemon. Its configuration is sometimes complicated, so a helpful configuration example has been included.
