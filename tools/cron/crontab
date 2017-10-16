@@ -1,0 +1,2 @@
+23      3,21    *       *       *       CONFIG_LETSENCRYPT_BIN > /dev/null
+45      23      2       *       *       /usr/bin/php    CONFIG_SITE_PATH/cron/update-ip2location-db.php
