@@ -9,7 +9,11 @@ When used in conjuction with Adobe Dreamweaver, it allows for CMS-style drag and
 
 It is designed to be the most efficient form of managing a website and relies upon no third party tools.
 
-The provided files are detailed below:
+## Installation
+This framework can self-install on any `debian`/`ubuntu` based system. Just put the `install.sh` file in the root of your website, and run it.
+Once it is installed, please see the `config.php` and `sample.config.php` file to set up your specific configuration information.
+
+The provided files are documented below:
 
 ### .htaccess
 - The .htaccess file includes a handy rewrite rule that removes the need for the .php in URL, therefore /login.php can be referenced by /login, for example.
