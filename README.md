@@ -11,7 +11,8 @@ It is designed to be the most efficient form of managing a website and relies up
 
 ## Installation
 This framework can self-install on any `debian`/`ubuntu` based system. Just put the `install.sh` file in the root of your website, and run it.
-Once it is installed, please see the `config.php` and `sample.config.php` file to set up your specific configuration information.
+Once it is installed, please see the `config.php` and `sample.config.php` file to set up your specific configuration information. Remember to include the `template/top.php` on each page, and then you'll always have access to all of the framework.
+For an example of a website that utilises this framework, please see [my repository of a game of assassins](https://github.com/sebastian-king/SMS-based-Assassins-Game) that I built on this framework.
 
 The provided files are documented below:
 
