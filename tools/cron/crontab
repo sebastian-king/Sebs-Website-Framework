@@ -1,2 +1,2 @@
-23      3,21    *       *       *       letsencrypt > /dev/null
-45      23      2       *       *       /usr/bin/php    BASE_PATH/cron/update-ip2location-db.php
+23      3,21    *       *       *       sebs_web_framework_user		letsencrypt > /dev/null
+45      23      2       *       *       sebs_web_framework_user		/usr/bin/php    BASE_PATH/cron/update-ip2location-db.php
