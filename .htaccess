@@ -1,0 +1,21 @@
+DirectorySlash Off
+
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{HTTP_HOST} !^$
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteCond %{HTTPS}s ^on(s)|
+RewriteRule ^ http%1://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+RewriteCond %{DOCUMENT_ROOT}/$1.php -f
+RewriteRule ^(([^/]+/)*[^.]+)$ /$1.php [L]
+
+RewriteRule ^auth/register/token/(.+)(?:/|)$ /auth/register?token=$1 [L]
+RewriteRule ^api/(.+).json$ /api/$1.php [L]
+RewriteRule ^ajax/(.+).json$ /ajax/$1.php [L]
+
+Options -Indexes
+
+ErrorDocument 404 /error/404.php
+ErrorDocument 500 /error/500.php

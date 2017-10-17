@@ -1,25 +1,11 @@
 <?php
-
 // config
-define("BASE", "/var/www/movieventure"); // also defined in .htaccess and accessible via getenv("BASE");
-// ^ no trailing slash
-define("EMAIL_DOMAIN", "movieventure.net");
-define("EMAIL_USER", "support");
-define("EMAIL_NAME", "Movieventure");
-define("DATABASE_HOST", "localhost");
-define("DATABASE_USER", "movieventure");
-define("DATABASE_PASSWORD", "3DRN43qqzyf3exaHnFr7cRrL");
-define("DATABASE_NAME", "movieventure");
-define("DATABASE_CHARSET", "utf8");
-
-define("SESSION_TIMEOUT", 1440); // 24 minutes
+require_once("config.php");
 
 $base = BASE; // for legacy support
 
 $currentCookieParams = session_get_cookie_params(); 
-
-$rootDomain = '.movieventure.net'; 
-
+$rootDomain = '.' . WEBSITE_DOMAIN; 
 session_set_cookie_params( 
     0,
     "/",
@@ -27,28 +13,22 @@ session_set_cookie_params(
     true,
 	true
 ); 
-session_name("MOVIEVENTURE_PHP_SESSION_ID");
+session_name(WEBSITE_NAME . "_PHP_SESSION_ID");
 session_start();
 
-$headers  = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-$headers .= 'From: ' . EMAIL_NAME . ' <' . EMAIL_USER . '@' . EMAIL_DOMAIN . '>' . "\r\n" .
-'Reply-To: ' . EMAIL_NAME . ' <' . EMAIL_USER . '@' . EMAIL_DOMAIN . '>' . "\r\n" .
-'X-Mailer: PHP/' . phpversion();
-
-$userinfo = array();
+$userinfo = array(); // this will be populated later, we are effectively making this a global
+$session = array();
 
 $db = new mysqli(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_NAME);
 $db->set_charset(DATABASE_CHARSET);
 
-date_default_timezone_set("UTC"); // by default use UTC for internal times
+date_default_timezone_set(TIMEZONE);
 
-function head($title, $heading, $auth = true, $breadcrumbs = array("Home" => "/"), $container_classes = "effect mainnav-lg", $return = false) {
+function head($title, $heading, $auth = true, $breadcrumbs = array("Home" => "/"), $return = false) {
 	global $base, $userinfo, $session, $db;
 	$default_values = array(
 		2 => array("auth", true),
 		3 => array("breadcrumbs", array("Home" => "/")),
-		4 => array("container_classes", "effect mainnav-lg"),
 		5 => array("return", false)
 	);
 	foreach (func_get_args() as $key => $val) {
@@ -64,9 +44,6 @@ function head($title, $heading, $auth = true, $breadcrumbs = array("Home" => "/"
 		$userinfo = $auth_result[0];
 		$session = $auth_result[1];
 		date_default_timezone_set($userinfo['timezone']);
-	}
-	if ($heading == true && gettype($heading) == "boolean") {
-		$heading = $title;
 	}
 	if ($return == true) {
 		ob_start();
@@ -96,13 +73,24 @@ function email($to, $subject, $message, $replyto = false, $headers = NULL) {
 		'Reply-To: ' . $replyto . "\r\n" .
 		'X-Mailer: PHP/' . phpversion();
 	}
-	return mail($to, $subject, $message, $headers);
+	$status = mail($to, $subject, $message, $headers);
+	$db->query("
+				INSERT INTO sent_emails (`to`, `subject`, `message`, `headers`, `status,)
+				VALUES (
+				" . $db->real_escape_string($to) . ",
+				" . $db->real_escape_string($subject) . ",
+				" . $db->real_escape_string($message) . ",
+				" . $db->real_escape_string($headers) . ",
+				" . $db->real_escape_string($status) . ",
+				)"
+			  );
+	return $status;
 }
 
 function auth($auth_level = 1) {
 	global $db;
-	if (isset($_COOKIE['MOVIEVENTURE_SESSION_ID']) && isset($_COOKIE['MOVIEVENTURE_SESSION_NAME'])) {
-		$q = $db->query("SELECT * FROM auth_sessions WHERE session_id = '".$db->real_escape_string($_COOKIE['MOVIEVENTURE_SESSION_ID'])."' AND session_name = '".$db->real_escape_string($_COOKIE['MOVIEVENTURE_SESSION_NAME'])."' AND (expires > ".time()." OR expires = 0) LIMIT 1") or die($db->error); //or die($db->error); // this is potentially a security risk if a user sees one of these errors
+	if (isset($_COOKIE[WEBSITE_NAME . 'SESSION_ID']) && isset($_COOKIE[WEBSITE_NAME . 'SESSION_NAME'])) {
+		$q = $db->query("SELECT * FROM auth_sessions WHERE session_id = '".$db->real_escape_string($_COOKIE[WEBSITE_NAME . 'SESSION_ID'])."' AND session_name = '".$db->real_escape_string($_COOKIE[WEBSITE_NAME . 'SESSION_NAME'])."' AND (expires > ".time()." OR expires = 0) LIMIT 1") or die($db->error); //or die($db->error); // this is potentially a security risk if a user sees one of these errors
 		if ($q->num_rows > 0) {
 			$auth_session = $q->fetch_array(MYSQLI_ASSOC);
 			if (md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT']) == $auth_session['fingerprint']) {
