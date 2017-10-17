@@ -1,7 +1,12 @@
 <?php
 
-$account_email = "admin@movieventure.net";
-$account_password = "MzJyA2xwz5s2";
+
+require(dirname(__FILE__) . "/../template/config.php"); // dirname() needed because this script is run by cron
+
+$account_email = IP2LOCATION_EMAIL;
+$account_password = IP2LOCATION_PASS;
+
+$ip_bin_dir = BASE_PATH . "/ip2location/";
 
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 	if (strlen(decbin(~0)) == 64) {
@@ -13,7 +18,11 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 	$bin = "download.pl";
 }
 
-chdir(dirname(__FILE__) . "/../ip2location/");
+
+if (!is_dir($ip_bin_dir)) {
+	mkdir($ip_bin_dir);
+}
+chdir($ip_bin_dir);
 
 exec("../cron/$bin -package DB11LITEBIN -login \"{$account_email}\" -password \"{$account_password}\"", $output);
 

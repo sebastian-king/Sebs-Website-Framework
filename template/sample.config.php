@@ -18,3 +18,6 @@ define("DATABASE_NAME", 	"example_database");
 define("DATABASE_CHARSET", 	"utf8");
 
 define("SESSION_TIMEOUT", 	1440); // 24 minutes
+
+define("IP2LOCATION_EMAIL", "admin@example.com");
+define("IP2LOCATION_PASS", "<password>");
