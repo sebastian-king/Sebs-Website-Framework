@@ -1,0 +1,3 @@
+template/config.php     # keep this private
+_notes/                 # remove the dropbox sync folders
+ip2location/*		# don't commit the huge bin files, also I believe I am not allowed to distribute these
