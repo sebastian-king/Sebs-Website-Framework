@@ -1,6 +1,5 @@
 <?php
 
-
 require(dirname(__FILE__) . "/../template/config.php"); // dirname() needed because this script is run by cron
 
 $account_email = IP2LOCATION_EMAIL;

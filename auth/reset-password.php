@@ -24,29 +24,9 @@ if (isset($_POST['password'])) {
 		}
 	} while (false);
 }
-?><!DOCTYPE html>
-<html lang="en">
-
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Reset your password | Movieventure</title>
- 	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin" rel="stylesheet">
-	<link href="/auth/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/auth/css/nifty.min.css" rel="stylesheet">
-	<link href="/auth/css/font-awesome.min.css" rel="stylesheet">
-	<link href="/auth/css/pace.min.css" rel="stylesheet">
-	<script src="/auth/js/pace.min.js"></script>
-</head>
+?>
 <body>
-	<div id="container" class="cls-container">
-		<div class="cls-header cls-header-lg">
-			<div class="cls-brand">
-				<a class="box-inline" href="/">
-					<span class="brand-title">Movie<span class="text-thin">venture</span></span>
-				</a>
-			</div>
-		</div>
+	<div id="container">
         <?php
         if (@$error || @$success) {
 			echo "<center><div class='well well-small' style='width:auto; display:inline-block;'>".@$error.@$success."</div></center>";
@@ -82,9 +62,4 @@ if (isset($_POST['password'])) {
 			</div>
 		</div>
 	</div>
-	<script src="/auth/js/jquery-2.1.1.min.js"></script>
-	<script src="/auth/js/bootstrap.min.js"></script>
-	<script src="/auth/js/fastclick.min.js"></script>
-	<script src="/auth/js/nifty.min.js"></script>
 </body>
-</html>
