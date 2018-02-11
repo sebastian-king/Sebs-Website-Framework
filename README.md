@@ -42,7 +42,7 @@ The authentication modules included are:
 Included in the installer, is a recommended tool called `letsencrypt` which will provide free and automated SSL for your website
 
 ### apache
-An example apache configuration file is provided, this file is easy for `cerbot` to use to make SSL and also contained `AllowOverride  All` that is needed for `.htaccess` to be executed.
+An example apache configuration file is provided, this file is easy for `letsencrypt` to use to make SSL and also contained `AllowOverride  All` that is needed for `.htaccess` to be executed.
 
 ### sql
 SQL templates included:
