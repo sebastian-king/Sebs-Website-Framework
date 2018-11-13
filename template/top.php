@@ -29,7 +29,7 @@ function head($title, $heading, $auth = true, $breadcrumbs = array("Home" => "/"
 	$default_values = array(
 		2 => array("auth", true),
 		3 => array("breadcrumbs", array("Home" => "/")),
-		5 => array("return", false)
+		4 => array("return", false)
 	);
 	foreach (func_get_args() as $key => $val) {
 		if ($val == NULL) {
