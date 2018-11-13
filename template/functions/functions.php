@@ -1,4 +1,5 @@
 <?php
+// general purpose functions
 function elapsed_secs_to_h($secs)
 {
         $units = array(
