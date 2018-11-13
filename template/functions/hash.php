@@ -300,7 +300,23 @@ class Math {
 }
 
 //use Hashids\Hashids;
-function obfuscate_hash($hash) {
-	$hashids = new Hashids('', strlen($hash));
-	return substr($hashids->encodeHex(md5($hash)), 0, strlen($hash));
+function obfuscate_hash($hash, $length) {
+	if ($length == -1) {
+		$length = strlen($hash);
+	}
+	$hashids = new Hashids(WEBSITE_NAME, $length);
+	return $hashids->encodeHex(md5($hash));
+}
+
+function encode_hash($hash, $length = -1) {
+	if ($length == -1) {
+		$length = strlen($hash);
+	}
+	$hashids = new Hashids(WEBSITE_NAME, $length);
+	return $hashids->encode($hash);
+}
+
+function decode_hash($hash) {
+	$hashids = new Hashids(WEBSITE_NAME);
+	return $hashids->decode($hash);
 }
