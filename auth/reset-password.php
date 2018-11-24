@@ -3,9 +3,9 @@ require("../template/top.php");
 if (isset($_POST['password'])) {
 	do {
 		if (isset($_GET['token']) && strlen($_GET['token']) > 0) {
-			$q = mysql_query("SELECT * FROM lostpass WHERE iid = '".mysql_real_escape_string($_GET['token'])."' LIMIT 1");
-			if (mysql_num_rows($q) == 1) {
-				$r = mysql_fetch_array($q);
+			$q = $db->query("SELECT * FROM reset_password_tokens WHERE reset_token = '" . $db->real_escape_string($_GET['token']) . "' LIMIT 1");
+			if ($q->num_rows == 1) {
+				$r = $q->fetch_array(MYSQLI_ASSOC);
 				if (strlen($_POST['password']) < 1 || strlen($_POST['password_confirmation']) < 1) {
 					$error = "You must enter both passwords.";
 					break;
@@ -13,13 +13,13 @@ if (isset($_POST['password'])) {
 					$error = "The passwords that you entered do not match";
 					break;
 				} else {
-					$password = password_hash("{$_POST['password']}", PASSWORD_BCRYPT, array('cost' => 12));
-					mysql_query("UPDATE users SET password = '".mysql_real_escape_string($password)."' WHERE email = '".mysql_real_escape_string($r['email'])."' LIMIT 1");
-					mysql_query("DELETE FROM lostpass WHERE iid = '".mysql_real_escape_string($_GET['token'])."' LIMIT 1");
+					$password = password_hash($_POST['password'], PASSWORD_BCRYPT, array('cost' => 12));
+					$db->query("UPDATE users SET password = '" . $db->real_escape_string($password) . "' WHERE email = '" . $db->real_escape_string($r['email']) . "' LIMIT 1");
+					$db->query("DELETE FROM lostpass WHERE iid = '" . $db->real_escape_string($_GET['token']) . "' LIMIT 1");
 					$success = "Password successfully updated, you may now <a href='/auth/login' style='text-decoration:underline;'>log in here</a>.";
 				}
 			} else {
-				$error = "Invalid token, please use <a href='/auth/forgot-password' style='text-decoration:underline;'>this page</a> again to obtain a new token.";
+				$error = "Invalid token, please use <a href='/auth/reset-password' style='text-decoration:underline;'>this page</a> again to obtain a new token.";
 			}
 		}
 	} while (false);
