@@ -57,7 +57,7 @@ if (count($_POST) > 0) {
 				$error = "Your username must be alphanumerical and between 3 to 16 characters.";
 				break;
 			}
-			$password = password_hash("{$_POST['password']}", PASSWORD_BCRYPT, array('cost' => 12));
+			$password = password_hash($_POST['password'], PASSWORD_BCRYPT, array('cost' => 12));
 			$ip = $_SERVER['REMOTE_ADDR'];
 			
 			$ipdb = FALSE;
