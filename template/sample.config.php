@@ -3,6 +3,7 @@ define("BASE", "/var/www/example"); // also defined in .htaccess and accessible 
 // ^ no trailing slash
 
 define("TIMEZONE", "America/Chicago");
+define("REQUIRE_AUTH", true);
 
 define("WEBSITE_NAME", "Example Website");
 define("WEBSITE_DOMAIN", "example.com");
