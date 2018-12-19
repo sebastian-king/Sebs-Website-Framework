@@ -24,18 +24,21 @@ $db->set_charset(DATABASE_CHARSET);
 
 date_default_timezone_set(TIMEZONE);
 
-function head($title, $heading, $auth = true, $breadcrumbs = array("Home" => "/"), $return = false) {
+function head($title, $heading, $auth = REQUIRE_AUTH, $breadcrumbs = array("Home" => "/"), $return = false) {
 	global $base, $userinfo, $session, $db;
+	
 	$default_values = array(
 		2 => array("auth", true),
 		3 => array("breadcrumbs", array("Home" => "/")),
 		4 => array("return", false)
 	);
+	
 	foreach (func_get_args() as $key => $val) {
 		if ($val == NULL) {
 			$$default_values[$key][0] = $default_values[$key][1];
 		}
 	}
+	
 	if ($auth == true) {
 		$auth_result = auth((int)$auth);
 		if (!is_array($auth_result)) {
@@ -45,6 +48,23 @@ function head($title, $heading, $auth = true, $breadcrumbs = array("Home" => "/"
 		$session = $auth_result[1];
 		date_default_timezone_set($userinfo['timezone']);
 	}
+	
+	$title = htmlspecialchars($title ? $title . " | " . WEBSITE_NAME : WEBSITE_NAME);
+	
+	$breadcrumbs = array();
+	$i = 0;
+	foreach ($breadcrumbs as $key => $val) {
+		if (++$i === count($breadcrumbs)) {
+			$breadcrumbs[$i] = array($val, $key, false);
+		} else {
+			$breadcrumbs[$i] = array($val, $key, true);
+		}
+	}
+	
+	if ($heading == true && gettype($heading) == "boolean") {
+		$heading = $title;
+	}
+	
 	if ($return == true) {
 		ob_start();
 		require("$base/template/header.php");
