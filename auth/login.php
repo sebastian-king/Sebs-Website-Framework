@@ -26,7 +26,7 @@ if (isset($_POST['username'])) {
 			} else {
 				$expires = 0;
 			}
-			$fingerprint = md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT']);
+			$fingerprint = md5($_SERVER['HTTP_USER_AGENT']);
 			$auth_session_id = obfuscate_hash(sha1($fingerprint . session_id())); // based on IP, time, /dev/urandom and a PHP PRNG (PLCG) and fingerprint calculated above
 			session_regenerate_id();
 			// possibly an odd solution but it works, the hashes are random and hard to read and should be relatively unique per device
