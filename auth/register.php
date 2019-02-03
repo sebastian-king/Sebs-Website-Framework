@@ -105,7 +105,7 @@ if (count($_POST) > 0) {
 				") or die($db->error);
 				$db->query("UPDATE invitation_tokens SET used = 1 WHERE token = '".$db->real_escape_string($_POST['token'])."'") or die($db->error);
 				
-				$fingerprint = md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT']);
+				$fingerprint = md5($_SERVER['HTTP_USER_AGENT']);
 				$auth_session_id = obfuscate_hash(sha1($fingerprint . session_id())); // based on IP, time, /dev/urandom and a PHP PRNG (PLCG) and fingerprint calculated above
 				session_regenerate_id();
 				$auth_session_name = obfuscate_hash(bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM))); // just really random
