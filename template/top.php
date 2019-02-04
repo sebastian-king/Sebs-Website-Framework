@@ -51,7 +51,7 @@ function head($title, $heading, $auth = REQUIRE_AUTH, $breadcrumbs = array("Home
 	
 	$title = htmlspecialchars($title ? $title . " | " . WEBSITE_NAME : WEBSITE_NAME);
 	
-	$breadcrumbs = array();
+	//$breadcrumbs = array();
 	$i = 0;
 	foreach ($breadcrumbs as $key => $val) {
 		if (++$i === count($breadcrumbs)) {
