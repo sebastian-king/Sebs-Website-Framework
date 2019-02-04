@@ -28,7 +28,7 @@ function head($title, $heading, $auth = REQUIRE_AUTH, $breadcrumbs = array("Home
 	global $base, $userinfo, $session, $db;
 	
 	$default_values = array(
-		2 => array("auth", true),
+		2 => array("auth", REQUIRE_AUTH),
 		3 => array("breadcrumbs", array("Home" => "/")),
 		4 => array("return", false)
 	);
