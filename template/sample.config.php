@@ -22,3 +22,4 @@ define("SESSION_TIMEOUT", 	1440); // 24 minutes
 
 define("IP2LOCATION_EMAIL", "admin@example.com");
 define("IP2LOCATION_PASS", "<password>");
+define("TIMEZONEDB_API_KEY",  "api_key");
