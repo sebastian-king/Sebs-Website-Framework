@@ -70,7 +70,7 @@ if (count($_POST) > 0) {
 				$timezone = "UTC";
 			} else {
 				$ipinfo = $ipdb->lookup($_SERVER['REMOTE_ADDR'], \IP2Location\Database::ALL);
-				$tzdb = file_get_contents("http://api.timezonedb.com?key=0EP3FN8GV69Q&lat={$ipinfo['latitude']}&lng={$ipinfo['longitude']}&format=json");
+				$tzdb = file_get_contents("http://api.timezonedb.com?key=" . TIMEZONEDB_API_KEY . "&lat={$ipinfo['latitude']}&lng={$ipinfo['longitude']}&format=json");
 				$timezone = json_decode($tzdb);
 				$timezone = $timezone->zoneName;
 				if (!in_array($timezone, timezone_identifiers_list())) {
