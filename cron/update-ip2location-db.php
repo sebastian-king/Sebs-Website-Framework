@@ -1,5 +1,7 @@
 <?php
 
+// depends: apt-get install php7.2-zip
+
 if (php_sapi_name() == "cli") {
 	require(dirname(__FILE__) . "/../template/config.php"); // dirname() needed because this script is run by cron
 
