@@ -30,7 +30,7 @@ if (isset($_POST['username'])) {
 			$auth_session_id = obfuscate_hash(sha1($fingerprint . session_id())); // based on IP, time, /dev/urandom and a PHP PRNG (PLCG) and fingerprint calculated above
 			session_regenerate_id();
 			// possibly an odd solution but it works, the hashes are random and hard to read and should be relatively unique per device
-			$auth_session_name = obfuscate_hash(bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM))); // just really random
+			$auth_session_name = obfuscate_hash(bin2hex(random_bytes(32))); // just really random
 			$db->query("INSERT INTO auth_sessions
 			(session_id,
 			session_name,
