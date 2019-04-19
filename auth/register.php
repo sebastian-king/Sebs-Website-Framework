@@ -124,8 +124,8 @@ if (count($_POST) > 0) {
 				'".$db->real_escape_string(0)."')
 				") or die($db->error); // remove this for security
 				
-				setcookie(WEBSITE_NAME . "SESSION_ID", $auth_session_id, 0, '/', WEBSITE_DOMAIN, true, true);
-				setcookie(WEBSITE_NAME . "SESSION_NAME", $auth_session_name, 0, '/', WEBSITE_DOMAIN, true, true);
+				setcookie(COOKIE_PREFIX . "_SESSION_ID", $auth_session_id, 0, '/', WEBSITE_DOMAIN, true, true);
+				setcookie(COOKIE_PREFIX . "_SESSION_NAME", $auth_session_name, 0, '/', WEBSITE_DOMAIN, true, true);
 			
 				header("Location: /");
 				die();
