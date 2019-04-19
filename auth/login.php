@@ -1,6 +1,6 @@
 <?php
 require("../template/top.php");
-include("$base/template/functions/hash.php");
+require(BASE . "/template/functions/hash.php");
 if (isset($_POST['username'])) {
 	do {
 		$required = array("username", "password");
@@ -26,7 +26,7 @@ if (isset($_POST['username'])) {
 			} else {
 				$expires = 0;
 			}
-			$fingerprint = md5($_SERVER['HTTP_USER_AGENT']);
+			$fingerprint = get_fingerprint();
 			$auth_session_id = obfuscate_hash(sha1($fingerprint . session_id())); // based on IP, time, /dev/urandom and a PHP PRNG (PLCG) and fingerprint calculated above
 			session_regenerate_id();
 			// possibly an odd solution but it works, the hashes are random and hard to read and should be relatively unique per device
@@ -45,14 +45,14 @@ if (isset($_POST['username'])) {
 			'".$db->real_escape_string($expires)."')
 			") or die($db->error); // remove this for security
 			
-			setcookie(WEBSITE_NAME . "SESSION_ID", $auth_session_id, $expires, '/', WEBSITE_DOMAIN, true, true);
-			setcookie(WEBSITE_NAME . "SESSION_NAME", $auth_session_name, $expires, '/', WEBSITE_DOMAIN, true, true);
+			setcookie(COOKIE_PREFIX . "_SESSION_ID", $auth_session_id, $expires, '/', WEBSITE_DOMAIN, true, true);
+			setcookie(COOKIE_PREFIX . "_SESSION_NAME", $auth_session_name, $expires, '/', WEBSITE_DOMAIN, true, true);
 			setcookie("remember", $r['username'], time()*2, '/auth/');
 			
 			if (isset($_GET['returnto'])) {
 				header("Location: //{$_SERVER['SERVER_NAME']}/".preg_replace("/^\//i", "", $_GET['returnto']));
 			} else {
-				header("Location: /");
+				header("Location: /me/");
 			}
 			die();
 		}
