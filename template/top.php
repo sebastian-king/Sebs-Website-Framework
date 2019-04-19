@@ -107,13 +107,17 @@ function email($to, $subject, $message, $replyto = false, $headers = NULL) {
 	return $status;
 }
 
+function get_fingerprint() {
+	return md5($_SERVER['HTTP_USER_AGENT']);
+}
+
 function auth($auth_level = 1) {
 	global $db;
 	if (isset($_COOKIE[COOKIE_PREFIX . '_SESSION_ID']) && isset($_COOKIE[COOKIE_PREFIX . '_SESSION_NAME'])) {
 		$q = $db->query("SELECT * FROM auth_sessions WHERE session_id = '".$db->real_escape_string($_COOKIE[COOKIE_PREFIX . '_SESSION_ID'])."' AND session_name = '".$db->real_escape_string($_COOKIE[COOKIE_PREFIX . '_SESSION_NAME'])."' AND (expires > ".time()." OR expires = 0) LIMIT 1") or die($db->error); //or die($db->error); // this is potentially a security risk if a user sees one of these errors
 		if ($q->num_rows > 0) {
 			$auth_session = $q->fetch_array(MYSQLI_ASSOC);
-			if (md5($_SERVER['HTTP_USER_AGENT']) == $auth_session['fingerprint']) {
+			if (get_fingerprint() == $auth_session['fingerprint']) {
 				$q = $db->query("SELECT * FROM users WHERE id = '".$db->real_escape_string($auth_session['uid'])."' LIMIT 1") or die($db->error);
 				if ($q->num_rows > 0) {
 					$userinfo = $q->fetch_array(MYSQLI_ASSOC);
