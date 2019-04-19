@@ -4,16 +4,16 @@ require_once("config.php");
 
 $base = BASE; // for legacy support
 
-$currentCookieParams = session_get_cookie_params(); 
-$rootDomain = '.' . WEBSITE_DOMAIN; 
-session_set_cookie_params( 
+$currentCookieParams = session_get_cookie_params();
+$rootDomain = '.' . WEBSITE_DOMAIN;
+session_set_cookie_params(
     0,
     "/",
     $rootDomain,
     true,
 	true
-); 
-session_name(WEBSITE_NAME . "_PHP_SESSION_ID");
+);
+session_name(COOKIE_PREFIX . "_PHP_SESSION_ID");
 session_start();
 
 $userinfo = array(); // this will be populated later, we are effectively making this a global
@@ -109,8 +109,8 @@ function email($to, $subject, $message, $replyto = false, $headers = NULL) {
 
 function auth($auth_level = 1) {
 	global $db;
-	if (isset($_COOKIE[WEBSITE_NAME . 'SESSION_ID']) && isset($_COOKIE[WEBSITE_NAME . 'SESSION_NAME'])) {
-		$q = $db->query("SELECT * FROM auth_sessions WHERE session_id = '".$db->real_escape_string($_COOKIE[WEBSITE_NAME . 'SESSION_ID'])."' AND session_name = '".$db->real_escape_string($_COOKIE[WEBSITE_NAME . 'SESSION_NAME'])."' AND (expires > ".time()." OR expires = 0) LIMIT 1") or die($db->error); //or die($db->error); // this is potentially a security risk if a user sees one of these errors
+	if (isset($_COOKIE[COOKIE_PREFIX . 'SESSION_ID']) && isset($_COOKIE[COOKIE_PREFIX . 'SESSION_NAME'])) {
+		$q = $db->query("SELECT * FROM auth_sessions WHERE session_id = '".$db->real_escape_string($_COOKIE[COOKIE_PREFIX . 'SESSION_ID'])."' AND session_name = '".$db->real_escape_string($_COOKIE[COOKIE_PREFIX . 'SESSION_NAME'])."' AND (expires > ".time()." OR expires = 0) LIMIT 1") or die($db->error); //or die($db->error); // this is potentially a security risk if a user sees one of these errors
 		if ($q->num_rows > 0) {
 			$auth_session = $q->fetch_array(MYSQLI_ASSOC);
 			if (md5($_SERVER['HTTP_USER_AGENT']) == $auth_session['fingerprint']) {
