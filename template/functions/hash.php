@@ -300,7 +300,7 @@ class Math {
 }
 
 //use Hashids\Hashids;
-function obfuscate_hash($hash, $length) {
+function obfuscate_hash($hash, $length = -1) {
 	if ($length == -1) {
 		$length = strlen($hash);
 	}
