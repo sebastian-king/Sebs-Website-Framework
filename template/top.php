@@ -5,11 +5,11 @@ require_once("config.php");
 $base = BASE; // for legacy support
 
 $currentCookieParams = session_get_cookie_params();
-$rootDomain = '.' . WEBSITE_DOMAIN;
+$root_domain = '.' . WEBSITE_DOMAIN;
 session_set_cookie_params(
     0,
     "/",
-    $rootDomain,
+    $root_domain,
     true,
 	true
 );
@@ -95,7 +95,7 @@ function email($to, $subject, $message, $replyto = false, $headers = NULL) {
 	}
 	$status = mail($to, $subject, $message, $headers);
 	$db->query("
-				INSERT INTO sent_emails (`to`, `subject`, `message`, `headers`, `status,)
+				INSERT INTO sent_emails (`to`, `subject`, `message`, `headers`, `status`)
 				VALUES (
 				" . $db->real_escape_string($to) . ",
 				" . $db->real_escape_string($subject) . ",
