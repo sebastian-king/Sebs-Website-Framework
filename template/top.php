@@ -85,6 +85,8 @@ function footer($die = true) {
 }
 
 function email($to, $subject, $message, $replyto = false, $headers = NULL) {
+	global $db;
+	
 	$replyto = ($replyto ? "$replyto" : EMAIL_NAME . ' <' . EMAIL_USER . '@' . EMAIL_DOMAIN . '>');
 	if (!$headers || $headers == NULL) {
 		$headers  = 'MIME-Version: 1.0' . "\r\n";
