@@ -4,13 +4,13 @@ require_once("config.php");
 
 $base = BASE; // for legacy support
 
-$currentCookieParams = session_get_cookie_params();
-$root_domain = '.' . WEBSITE_DOMAIN;
+$current_cookie_params = session_get_cookie_params(); // is this necessary?
+
 session_set_cookie_params(
-    0,
-    "/",
-    $root_domain,
-    true,
+	0,
+	"/",
+	'.' . WEBSITE_DOMAIN, // root domain
+	true,
 	true
 );
 session_name(COOKIE_PREFIX . "_PHP_SESSION_ID");
@@ -95,7 +95,9 @@ function email($to, $subject, $message, $replyto = false, $headers = NULL) {
 		'Reply-To: ' . $replyto . "\r\n" .
 		'X-Mailer: PHP/' . phpversion();
 	}
+	
 	$status = mail($to, $subject, $message, $headers);
+	
 	$db->query("
 				INSERT INTO sent_emails (`to`, `subject`, `message`, `headers`, `status`)
 				VALUES (
@@ -103,9 +105,14 @@ function email($to, $subject, $message, $replyto = false, $headers = NULL) {
 				" . $db->real_escape_string($subject) . ",
 				" . $db->real_escape_string($message) . ",
 				" . $db->real_escape_string($headers) . ",
-				" . $db->real_escape_string($status) . ",
+				" . $db->real_escape_string($status) . "
 				)"
-			  );
+	);
+	
+	//if (!$q) {
+		//echo $db->error;
+	//}
+	
 	return $status;
 }
 
